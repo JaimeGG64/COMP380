@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 # COMP380
-=======
-# my-project
 
 ## Project setup
 ```
@@ -27,4 +24,3 @@ yarn run lint
 ```
 yarn run test:unit
 ```
->>>>>>> a900dfbcc52f1c73a4ca878cb052f7981529d0ce
