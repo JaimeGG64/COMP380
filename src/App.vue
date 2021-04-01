@@ -1,17 +1,6 @@
 <template>
   <div id="app">
-    <div>
-      <b-nav>
-        <b-nav-item active>Active</b-nav-item>
-        <b-nav-item>Link</b-nav-item>
-        <b-nav-item>Another Link</b-nav-item>
-        <b-nav-item>Disabled</b-nav-item>
-        <b-nav-form>
-          <b-form-input aria-label="Input" class="mr-1"></b-form-input>
-          <b-button>Sup</b-button>
-        </b-nav-form>
-      </b-nav>
-    </div>
+    <Navbar />
     <router-view />
   </div>
 </template>
@@ -37,15 +26,11 @@
 </style>
 
 <script>
-import {BNav, BNavItem, BFormInput, BNavForm, BButton}  from 'bootstrap-vue';
+import Navbar from "./components/Navbar";
 
 export default {
   components: {
-    'b-nav' : BNav,
-    'b-nav-item' : BNavItem,
-    'b-nav-form' : BNavForm,
-    'b-form-input' : BFormInput,
-    'b-button' : BButton
-  }
-}
+    Navbar: Navbar,
+  },
+};
 </script>
