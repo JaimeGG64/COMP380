@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>CSUN Classes</h1>
-    <b-form>
+    <b-form @submit="onSubmit">
       <b-form-group
         id="input-group-1"
         label="Username or Email:"
@@ -18,8 +18,9 @@
 
       <b-form-group id="input-group-2" label="Password:" label-for="input-2">
         <b-form-input
-          type="password"
           id="text-password"
+          v-model="form.password"
+          type="password"
           placeholder="Password"
           aria-describedby="password-help-block"
         ></b-form-input>
@@ -61,9 +62,16 @@ export default {
     };
   },
   methods: {
+    // eslint-disable-next-line
     onSubmit(event) {
       event.preventDefault();
-      alert(JSON.stringify(this.form));
+      if(this.form.email === "jd21345" && this.form.password === "password"){
+         // eslint-disable-next-line
+        this.$router.push('student');
+      }
+      else if(this.form.email === "kv16753" && this.form.password === "bitcoin"){
+        this.$router.push('instructor');
+      }
     },
   },
 };
