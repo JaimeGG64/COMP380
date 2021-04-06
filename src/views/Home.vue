@@ -66,13 +66,27 @@ export default {
     onSubmit(event) {
       event.preventDefault();
       if(this.form.email === "jd21345" && this.form.password === "password"){
-         // eslint-disable-next-line
-        this.$router.push('student');
+        this.studentLogin();
       }
       else if(this.form.email === "kv16753" && this.form.password === "bitcoin"){
-        this.$router.push('instructor');
+        this.instructorLogin();
+      }
+      else if(this.form.email === "qt72349" && this.form.password === "password"){
+        this.adminLogin();
       }
     },
+    studentLogin(){
+      // eslint-disable-next-line
+      this.$router.push('student');
+    },
+    instructorLogin(){
+      // eslint-disable-next-line
+      this.$router.push('instructor');
+    },
+    adminLogin(){
+      // eslint-disable-next-line
+      this.$router.push('admin')
+    }
   },
 };
 </script>

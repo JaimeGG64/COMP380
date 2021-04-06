@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-nav align="center" v-if="$route.name != 'home'">
+    <b-nav fill v-if="$route.name === 'student'">
       <b-nav-item>CSUN Classes</b-nav-item>
       <b-nav-form>
         <b-form-input aria-label="Input" class="mr-1"></b-form-input>
@@ -8,6 +8,17 @@
       </b-nav-form>
       <b-nav-item>View My Classes</b-nav-item>
       <b-nav-item>Enroll in Classes</b-nav-item>
+      <b-nav-item to="/">Logout</b-nav-item>
+    </b-nav>
+    <b-nav fill v-if="$route.name === 'instructor'">
+      <b-nav-item>CSUN Classes</b-nav-item>
+      <b-nav-item>View My Classes</b-nav-item>
+      <b-nav-item to="/">Logout</b-nav-item>
+    </b-nav>
+    <b-nav fill v-if="$route.name === 'admin'">
+      <b-nav-item>CSUN Classes</b-nav-item>
+      <b-nav-item>View My Classes</b-nav-item>
+      <b-nav-item to="/">Logout</b-nav-item>
     </b-nav>
   </div>
 </template>
