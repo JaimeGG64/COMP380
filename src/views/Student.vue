@@ -14,12 +14,23 @@
 <script>
 import { BFormInput, BNavForm, BButton } from "bootstrap-vue";
 
+import Vue from 'vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
+
 export default {
   name: "Student",
   components: {
     "b-nav-form": BNavForm,
     "b-form-input": BFormInput,
     "b-button": BButton,
+  },
+  mounted: function (){
+    Vue.axios.get('https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp')
+    .then((resp) =>{
+      console.log(resp);
+    })
   },
   data: function () {
     return {
