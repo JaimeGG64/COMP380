@@ -67,7 +67,12 @@ export default {
     Vue.axios
       .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp")
       .then((resp) => {
-        this.classByMajor = resp.data.classes;
+        const seen = new Set();
+        this.classByMajor = resp.data.classes.filter((el) => {
+          const duplicate = seen.has(el.catalog_number);
+          seen.add(el.catalog_number);
+          return !duplicate;
+        });
         console.log(resp);
       });
   },
