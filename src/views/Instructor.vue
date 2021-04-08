@@ -1,11 +1,11 @@
 <template>
   <div>
     <h1>Instructor View</h1>
-    <table>
+    <table class="table">
       <thead>
         <tr>
           <td>Course ID</td>
-          <td>Course Name</td>
+          <td style="text-align: left">Course Name</td>
           <td>Course Type</td>
           <td>Location</td>
           <td>Unit</td>
@@ -18,7 +18,7 @@
           <td>
             {{ item.class_number }}
           </td>
-          <td>
+          <td style="text-align: left">
             {{ item.subject }} {{ item.catalog_number }} - {{ item.title }}
           </td>
           <td>
@@ -33,6 +33,10 @@
     </table>
   </div>
 </template>
+
+<style lang="sass">
+@import "../scss/table.scss"
+</style>
 
 <script>
 import Vue from "vue";

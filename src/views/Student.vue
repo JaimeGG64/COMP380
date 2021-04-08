@@ -2,7 +2,7 @@
   <div>
     <h1>Hi, {{ firstName + " " + lastName }}</h1>
     <p>Start your class search</p>
-    <b-nav-form>
+    <b-form>
       <b-form-group
         id="input-group-1"
         label="Class Search:"
@@ -11,21 +11,17 @@
         <b-form-input aria-label="Input" class="mr-3"></b-form-input>
         <b-button>Search</b-button>
       </b-form-group>
-      <b-form-group
-        id="input-group-1"
-        label="Class Search:"
-        label-for="input-1"
-      >
-        <b-button>Quick Search by Major</b-button>
+      <b-form-group id="input-group-1" label-for="input-1">
+        <b-button @click="searchByMajor()">Quick Search by Major</b-button>
         <b-button>Quick Search by GE</b-button>
       </b-form-group>
-    </b-nav-form>
+    </b-form>
 
-    <table class="table">
+    <table class="table" v-if="quickSearchMajorState">
       <thead>
         <tr>
           <td style="text-align: left">Course Name</td>
-          <td>Unit</td>
+          <td>Units</td>
         </tr>
       </thead>
       <tbody>
@@ -45,17 +41,23 @@
 </style>
 
 <script>
-import { BFormInput, BNavForm, BButton, BFormGroup } from "bootstrap-vue";
+import {
+  BFormInput,
+  BForm,
+  BButton,
+  BFormGroup,
+  FormPlugin,
+} from "bootstrap-vue";
 
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-Vue.use(VueAxios, axios);
+Vue.use(VueAxios, axios, FormPlugin);
 
 export default {
   name: "Student",
   components: {
-    "b-nav-form": BNavForm,
+    "b-form": BForm,
     "b-form-input": BFormInput,
     "b-button": BButton,
     "b-form-group": BFormGroup,
@@ -65,11 +67,12 @@ export default {
       firstName: "John",
       lastName: "Doe",
       classByMajor: undefined,
+      quickSearchMajorState: false,
     };
   },
   mounted: function () {
     Vue.axios
-      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/art")
+      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp")
       .then((resp) => {
         const seen = new Set();
         this.classByMajor = resp.data.classes.filter((el) => {
@@ -82,7 +85,7 @@ export default {
   },
   methods: {
     searchByMajor() {
-      console.log("hi");
+      this.quickSearchMajorState = true;
     },
   },
 };
