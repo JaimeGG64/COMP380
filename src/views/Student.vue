@@ -21,16 +21,16 @@
       </b-form-group>
     </b-nav-form>
 
-    <table>
+    <table class="table">
       <thead>
         <tr>
-          <td>Course Name</td>
+          <td style="text-align: left">Course Name</td>
           <td>Unit</td>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, i) in classByMajor" :key="i">
-          <td>
+          <td style="text-align: left">
             {{ item.subject }} {{ item.catalog_number }} - {{ item.title }}
           </td>
           <td>{{ item.units }}</td>
@@ -39,6 +39,10 @@
     </table>
   </div>
 </template>
+
+<style lang="sass">
+@import "../scss/table.scss"
+</style>
 
 <script>
 import { BFormInput, BNavForm, BButton, BFormGroup } from "bootstrap-vue";
@@ -65,7 +69,7 @@ export default {
   },
   mounted: function () {
     Vue.axios
-      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp")
+      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/art")
       .then((resp) => {
         const seen = new Set();
         this.classByMajor = resp.data.classes.filter((el) => {
@@ -83,3 +87,5 @@ export default {
   },
 };
 </script>
+
+
