@@ -34,8 +34,8 @@
   </div>
 </template>
 
-<style lang="sass">
-@import "../scss/table.scss"
+<style lang="scss">
+@import "../scss/table.scss";
 </style>
 
 <script>

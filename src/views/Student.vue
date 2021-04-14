@@ -36,8 +36,8 @@
   </div>
 </template>
 
-<style lang="sass">
-@import "../scss/table.scss"
+<style lang="scss">
+@import "../scss/table.scss";
 </style>
 
 <script>
@@ -71,8 +71,9 @@ export default {
     };
   },
   mounted: function () {
+    let subject = 'comp'
     Vue.axios
-      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp")
+      .get(`https://api.metalab.csun.edu/curriculum/api/2.0/classes/${subject}`)
       .then((resp) => {
         const seen = new Set();
         this.classByMajor = resp.data.classes.filter((el) => {
