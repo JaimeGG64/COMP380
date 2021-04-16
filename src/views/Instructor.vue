@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>Instructor View</h1>
+    <h2>{{ parseEmail(email) }}</h2>
     <table class="table">
       <thead>
         <tr>
@@ -26,7 +27,9 @@
           </td>
           <td>{{ item.meetings[0].location }}</td>
           <td>{{ item.units }}</td>
-          <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
+          <td>
+            {{ getSeatsLeft(item.enrollment_cap, item.enrollment_count) }}
+          </td>
           <td><button>Generate</button></td>
         </tr>
       </tbody>
@@ -46,22 +49,48 @@ Vue.use(VueAxios, axios);
 
 export default {
   name: "Instructor",
-  data: function () {
+  data: function() {
     return {
       firstName: "Vincent",
       lastName: "Doe",
-      instructorClass: undefined,
+      email: "vahe.karamian@csun.edu",
+      instructorClass: [],
     };
   },
-  mounted: function () {
+  mounted: function() {
     Vue.axios
       .get(
-        "https://api.metalab.csun.edu/curriculum/api/2.0/classes?instructor=vahe.karamian@csun.edu"
+        `https://api.metalab.csun.edu/curriculum/api/2.0/classes?instructor=${this.email}`
       )
       .then((resp) => {
         this.instructorClass = resp.data.classes;
         console.log(resp);
       });
+  },
+  methods: {
+    parseEmail(instructorEmail) {
+      let instructorName = instructorEmail.split(".");
+      //first name is instructorName[0]
+      let instructorLastName = instructorName[1].split("@");
+      //last name is instructorLastName[0]
+      instructorName[1] = instructorLastName[0];
+      //first name at instructorName[0] and last name at instructorName[1]
+      instructorName[0] =
+        instructorName[0].charAt(0).toUpperCase() + instructorName[0].slice(1);
+      instructorName[1] =
+        instructorName[1].charAt(0).toUpperCase() + instructorName[1].slice(1);
+      /*
+      let instructorName = parseEmail("vahe.karamian@csun.edu");
+      console.log(instructorName[0] + " " + instructorName[1]);
+      */
+
+      return instructorName[0] + " " + instructorName[1];
+    },
+    getSeatsLeft(enrollmentCap, enrollmentCount) {
+      return enrollmentCap - enrollmentCount < 0
+        ? 0
+        : enrollmentCap - enrollmentCount;
+    },
   },
 };
 </script>
