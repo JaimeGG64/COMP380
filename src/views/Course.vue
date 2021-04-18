@@ -1,16 +1,13 @@
 <template>
   <main class="course">
     <h1 class="course__heading">COMP 110 - Intro to Algo</h1>
+
+
+      
     <aside class="course__aside">
       <h2>Course Description</h2>
       <p>
-        Prerequisites: Grade of C or better in MATH 102 103 104 105 150A or 255A
-        or a passing score on the Math Placement Test (MPT) that satisfies
-        prerequisites for MATH 150A or 255A . Corequisites: COMP 110L.
-        Introduction to algorithms their representation design structuring
-        analysis and optimization. Implementation of algorithms as structured
-        programs in a high level language. Lab: three hours per week. (Available
-        for General Education Lifelong Learning if required by students major.)
+          {{availabeSection[0].description}}
       </p>
       <b-form inline>
         <label for="permission-number">Permission Number</label>
@@ -26,14 +23,23 @@
           <tr>
             <td>Days</td>
             <td>Time</td>
-            <td>Enroll</td>
+            <td>Location</td>
+            <td>Seats Left</td>
+            <td>Action</td>
+
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>MoWe</td>
-            <td>10:30AM-11:30AM</td>
+          <tr v-for="(item, i) in availabeSection" :key="i">
+            <td style="text-align: left">
+                {{item.meetings[0].days}}
+            </td>
+            <td>{{item.meetings[0].start_time}} - {{item.meetings[0].end_time}}</td>
+            <td>{{item.meetings[0].location}}</td>
+            <td>{{item.meetings[0].meeting_number}}</td>
             <td><button>Enroll</button></td>
+            
+            
           </tr>
         </tbody>
       </table>
@@ -94,8 +100,7 @@ export default {
   },
   data: function () {
     return {
-      firstName: "Vincent",
-      lastName: "Doe",
+
       availabeSection: undefined,
     };
   },
