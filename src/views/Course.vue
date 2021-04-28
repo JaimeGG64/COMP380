@@ -36,7 +36,7 @@
             </td>
             <td>{{item.meetings[0].start_time}} - {{item.meetings[0].end_time}}</td>
             <td>{{item.meetings[0].location}}</td>
-            <td>{{item.meetings[0].meeting_number}}</td>
+            <td>{{item.enrollment_cap-item.enrollment_count}}</td>
             <td><button>Enroll</button></td>
             
             
