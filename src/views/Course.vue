@@ -1,19 +1,22 @@
 <template>
   <main class="course">
-    <h1 class="course__heading">COMP 110 - Intro to Algo</h1>
+    <router-link class="course__back-link" to="/student">
+      Back to Results
+    </router-link>
+    <h1 class="course__heading">
+      {{
+        `${availabeSection[0].subject} ${availabeSection[0].catalog_number} - ${availabeSection[0].title}`
+      }}
+    </h1>
 
-
-      
     <aside class="course__aside">
       <h2>Course Description</h2>
       <p>
-          {{availabeSection[0].description}}
+        {{ availabeSection[0].description }}
       </p>
       <b-form inline>
         <label for="permission-number">Permission Number</label>
-        <b-form-input
-          id="permission-number"
-        ></b-form-input>
+        <b-form-input id="permission-number"></b-form-input>
       </b-form>
     </aside>
     <article class="course__table">
@@ -26,21 +29,23 @@
             <td>Location</td>
             <td>Seats Left</td>
             <td>Action</td>
-
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, i) in availabeSection" :key="i">
-            <td style="text-align: left">
-                {{item.meetings[0].days}}
-            </td>
-            <td>{{item.meetings[0].start_time}} - {{item.meetings[0].end_time}}</td>
-            <td>{{item.meetings[0].location}}</td>
-            <td>{{item.meetings[0].meeting_number}}</td>
-            <td><button>Enroll</button></td>
-            
-            
-          </tr>
+          <template v-for="(item, i) in availabeSection">
+            <tr v-if="item.meetings[0]" :key="i">
+              <td>
+                {{ item.meetings[0].days }}
+              </td>
+              <td>
+                {{ item.meetings[0].start_time }} -
+                {{ item.meetings[0].end_time }}
+              </td>
+              <td>{{ item.meetings[0].location }}</td>
+              <td>{{ item.meetings[0].meeting_number }}</td>
+              <td><button>Enroll</button></td>
+            </tr>
+          </template>
         </tbody>
       </table>
     </article>
@@ -56,18 +61,24 @@
   &__heading {
     text-align: center;
   }
-  h2, p {
-      text-align: left;
+  h2,
+  p {
+    text-align: left;
   }
 }
 @media screen and (min-width: map-get($break-point , "lg")) {
   .course {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
+      "link link"
       "heading heading"
       "table aside";
     &__heading {
       grid-area: heading;
+      text-align: left;
+    }
+    &__back-link {
+      grid-area: link;
       text-align: left;
     }
     &__aside {
@@ -84,10 +95,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import { FormPlugin,
-  BForm,
-  BFormText,
-  BFormInput } from "bootstrap-vue";
+import { FormPlugin, BForm, BFormText, BFormInput } from "bootstrap-vue";
 Vue.use(VueAxios, axios, FormPlugin);
 
 export default {
@@ -100,17 +108,31 @@ export default {
   },
   data: function () {
     return {
-
-      availabeSection: undefined,
+      availabeSection: [
+        {
+          meetings: [
+            {
+              days: "",
+              end_time: "",
+              location: "",
+              start_time: "",
+            },
+          ],
+        },
+      ],
     };
   },
+  props: ["courseName"],
   mounted: function () {
+    let getCourseName = this.$route.params.courseName;
     Vue.axios
-      .get("https://api.metalab.csun.edu/curriculum/api/2.0/classes/comp-110")
+      .get(
+        `https://api.metalab.csun.edu/curriculum/api/2.0/classes/${getCourseName}`
+      )
       .then((resp) => {
         this.availabeSection = resp.data.classes;
-        console.log(resp);
-      });
+      })
+      .catch((err) => console.log(err));
   },
 };
 </script>
