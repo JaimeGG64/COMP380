@@ -27,7 +27,9 @@
       <tbody>
         <tr v-for="(item, i) in classByMajor" :key="i">
           <td style="text-align: left">
-            {{ item.subject }} {{ item.catalog_number }} - {{ item.title }}
+            <router-link :to="`/course/${item.subject}-${item.catalog_number}`">
+              {{ item.subject }} {{ item.catalog_number }} - {{ item.title }}
+            </router-link>
           </td>
           <td>{{ item.units }}</td>
         </tr>
@@ -71,7 +73,7 @@ export default {
     };
   },
   mounted: function () {
-    let subject = 'comp'
+    let subject = "cadv";
     Vue.axios
       .get(`https://api.metalab.csun.edu/curriculum/api/2.0/classes/${subject}`)
       .then((resp) => {
