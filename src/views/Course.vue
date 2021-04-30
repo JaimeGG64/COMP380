@@ -38,8 +38,7 @@
                 {{ item.meetings[0].days }}
               </td>
               <td>
-                {{ item.meetings[0].start_time }} -
-                {{ item.meetings[0].end_time }}
+                {{ modifyTime(item.meetings[0].start_time) }} – {{ modifyTime(item.meetings[0].end_time) }}
               </td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap-item.enrollment_count }}</td>
@@ -122,12 +121,31 @@ export default {
       ],
     };
   },
+  methods: {
+    modifyTime(time){
+      let time_mod="";
+      let num;
+      if (time.charAt(0)==='0'){
+        time_mod=time.charAt(1) + ':' + time.charAt(2)+time.charAt(3) + " AM";
+      }
+      else if (time.charAt(0)==='1' && (time.charAt(1)==='1' || time.charAt(1)==='2'|| time.charAt(1)==='0') ){
+        
+        time_mod=time.charAt(0)+time.charAt(1) + ':' + time.charAt(2)+time.charAt(3) + " AM";
+      }
+      else {
+        num=Number(time.charAt(0)+time.charAt(1))-12;
+        time_mod=num + ':' + time.charAt(2)+time.charAt(3) + " PM";
+      }
+
+      return time_mod
+    }
+  },
   props: ["courseName"],
   mounted: function () {
     let getCourseName = this.$route.params.courseName;
     Vue.axios
       .get(
-        `https://api.metalab.csun.edu/curriculum/api/2.0/classes/${getCourseName}`
+        `https://api.metalab.csun.edu/curriculum/api/2.0/terms/Spring-2021/classes/${getCourseName}`
       )
       .then((resp) => {
         this.availabeSection = resp.data.classes;
