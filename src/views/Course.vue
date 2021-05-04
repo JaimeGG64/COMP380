@@ -42,7 +42,7 @@
                 {{ item.meetings[0].end_time }}
               </td>
               <td>{{ item.meetings[0].location }}</td>
-              <td>{{ item.enrollment_cap-item.enrollment_count }}</td>
+              <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
               <td><button>Enroll</button></td>
             </tr>
           </template>
@@ -122,12 +122,12 @@ export default {
       ],
     };
   },
-  props: ["courseName"],
+  props: ["courseName", "user"],
   mounted: function () {
     let getCourseName = this.$route.params.courseName;
     Vue.axios
       .get(
-        `https://api.metalab.csun.edu/curriculum/api/2.0/classes/${getCourseName}`
+        `https://api.metalab.csun.edu/curriculum/api/2.0/terms/Spring-2021/classes/${getCourseName}`
       )
       .then((resp) => {
         this.availabeSection = resp.data.classes;
