@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar @logout="logout" />
     <router-view :user="user" />
   </div>
 </template>
