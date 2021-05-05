@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>CSUN Classes</h1>
-    <b-form @submit.prevent="verifyLogin">
+    <b-form @submit.prevent="checkLogin">
       <b-form-group
         id="input-group-1"
         label="Username or Email:"
@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     // eslint-disable-next-line
-    verifyLogin: function () {
+    checkLogin: function () {
       const info = {
         email: this.form.email,
         password: this.form.password,
