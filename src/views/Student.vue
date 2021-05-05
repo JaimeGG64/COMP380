@@ -84,7 +84,6 @@ export default {
           seen.add(el.catalog_number);
           return !duplicate;
         });
-        console.log(resp);
       });
   },
   methods: {

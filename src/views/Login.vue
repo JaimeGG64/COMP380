@@ -73,36 +73,18 @@ export default {
         .signInWithEmailAndPassword(info.email, info.password)
         .then(
           () => {
-            this.$router.push("student");
+            let getEmailAddress = info.email;
+            let emailDomain = getEmailAddress.split("@");
+            if (emailDomain[1] == "my.csun.edu") {
+              this.$router.push("student");
+            } else if (emailDomain[1] == "csun.edu") {
+              this.$router.push("instructor");
+            }
           },
           (error) => {
             this.error = error.message;
           }
         );
-    },
-    onSubmit(event) {
-      event.preventDefault();
-      if (this.form.email === "jd21345" && this.form.password === "password") {
-        this.studentLogin();
-      } else if (
-        this.form.email === "kv16753" &&
-        this.form.password === "bitcoin"
-      ) {
-        this.instructorLogin();
-      } else if (
-        this.form.email === "qt72349" &&
-        this.form.password === "password"
-      ) {
-        this.adminLogin();
-      }
-    },
-    studentLogin() {
-      // eslint-disable-next-line
-      this.$router.push("student");
-    },
-    instructorLogin() {
-      // eslint-disable-next-line
-      this.$router.push("instructor");
     },
   },
 };
