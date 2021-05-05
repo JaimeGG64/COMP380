@@ -5,7 +5,7 @@
     </router-link>
     <h1 class="course__heading">
       {{
-        `${availabeSection[0].subject} ${availabeSection[0].catalog_number} - ${availabeSection[0].title}`
+        `${availabeSection[0].subject} ${availabeSection[0].catalog_number} - ${availabeSection[0].title} (${availabeSection[0].class_type} ${availabeSection[0].units} ${generateUnit(availabeSection[0].units)})`
       }}
     </h1>
 
@@ -45,7 +45,8 @@
               <td>{{ instructorName(item.instructors[0].instructor) }}</td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
-              <td><button>Enroll</button></td>
+              <td><button @click="generatePermissionNumber()">Enroll</button><br>{{permissionNumber}}</td>
+              
             </tr>
           </template>
         </tbody>
@@ -122,6 +123,7 @@ export default {
           ],
         },
       ],
+      permissionNumber: ""
     };
   },
   methods: {
@@ -174,7 +176,7 @@ export default {
     },
       instructorName(email) {
       let instructor_mod = "";
-
+      let period=false;
      
       for (let i = 0; email.charAt(i)!='@'; i++) {
           if (i===0){
@@ -182,15 +184,34 @@ export default {
            i++;
           }
           if(email.charAt(i)==='.'){
+            if (period===true){
+              break;
+            }
             instructor_mod+=" ";
             i++;
             instructor_mod+=email.charAt(i).toUpperCase();
            i++;
+           period=true;
           }
           instructor_mod+=email.charAt(i);
       }
       return instructor_mod;
     },
+
+    generatePermissionNumber(){
+      
+      let str="";
+      str= Math.floor((Math.random() * 900000) + 100000).toString();
+      this.permissionNumber=str;
+    },
+    generateUnit(unit){
+      if (unit==="1"){
+        return "Unit";
+      }
+      else{
+        return "Units";
+      }
+    }
 
   },
 
