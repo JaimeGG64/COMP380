@@ -35,7 +35,7 @@
           <template v-for="(item, i) in availabeSection">
             <tr v-if="item.meetings[0]" :key="i">
               <td>
-                {{ item.meetings[0].days }}
+                {{ dayName(item.meetings[0].days) }}
               </td>
               <td>
                 {{ modifyTime(item.meetings[0].start_time) }} –
@@ -149,6 +149,27 @@ export default {
       }
 
       return time_mod;
+    },
+    dayName(day) {
+      let day_mod = "";
+
+     
+      for (let i = 0; i < day.length; i++) {
+        if (day.charAt(i) === "M") {
+          day_mod += "Mo";
+        } else if (day.charAt(i) === "T") {
+          day_mod += "Tu";
+        } else if (day.charAt(i) === "W") {
+          day_mod += "We";
+        } else if (day.charAt(i) === "R") {
+          day_mod += "Th";
+        } else if (day.charAt(i) === "F") {
+          day_mod += "Fr";
+        } else if (day.charAt(i) === "S") {
+          day_mod += "Sa";
+        }
+      }
+      return day_mod;
     },
   },
   mounted: function () {
