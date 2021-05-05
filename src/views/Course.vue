@@ -26,6 +26,7 @@
           <tr>
             <td>Days</td>
             <td>Time</td>
+            <td>Instuctor</td>
             <td>Location</td>
             <td>Seats Left</td>
             <td>Action</td>
@@ -41,6 +42,7 @@
                 {{ modifyTime(item.meetings[0].start_time) }} –
                 {{ modifyTime(item.meetings[0].end_time) }}
               </td>
+              <td>{{ instructorName(item.instructors[0].instructor) }}</td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
               <td><button>Enroll</button></td>
@@ -170,6 +172,26 @@ export default {
       }
       return day_mod;
     },
+      instructorName(email) {
+      let instructor_mod = "";
+
+     
+      for (let i = 0; email.charAt(i)!='@'; i++) {
+          if (i===0){
+           instructor_mod+=email.charAt(0).toUpperCase();
+           i++;
+          }
+          if(email.charAt(i)==='.'){
+            instructor_mod+=" ";
+            i++;
+            instructor_mod+=email.charAt(i).toUpperCase();
+           i++;
+          }
+          instructor_mod+=email.charAt(i);
+      }
+      return instructor_mod;
+    },
+
   },
 
   props: ["courseName"],
