@@ -35,13 +35,14 @@
           <template v-for="(item, i) in availabeSection">
             <tr v-if="item.meetings[0]" :key="i">
               <td>
-                {{ item.meetings[0].days }}
+                {{ dayName(item.meetings[0].days) }}
               </td>
               <td>
-                {{ modifyTime(item.meetings[0].start_time) }} – {{ modifyTime(item.meetings[0].end_time) }}
+                {{ modifyTime(item.meetings[0].start_time) }} –
+                {{ modifyTime(item.meetings[0].end_time) }}
               </td>
               <td>{{ item.meetings[0].location }}</td>
-              <td>{{ item.enrollment_cap-item.enrollment_count }}</td>
+              <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
               <td><button>Enroll</button></td>
             </tr>
           </template>
@@ -122,24 +123,55 @@ export default {
     };
   },
   methods: {
-    modifyTime(time){
-      let time_mod="";
+    modifyTime(time) {
+      let time_mod = "";
       let num;
-      if (time.charAt(0)==='0'){
-        time_mod=time.charAt(1) + ':' + time.charAt(2)+time.charAt(3) + " AM";
-      }
-      else if (time.charAt(0)==='1' && (time.charAt(1)==='1' || time.charAt(1)==='2'|| time.charAt(1)==='0') ){
-        
-        time_mod=time.charAt(0)+time.charAt(1) + ':' + time.charAt(2)+time.charAt(3) + " AM";
-      }
-      else {
-        num=Number(time.charAt(0)+time.charAt(1))-12;
-        time_mod=num + ':' + time.charAt(2)+time.charAt(3) + " PM";
+      if (time.charAt(0) === "0") {
+        time_mod =
+          time.charAt(1) + ":" + time.charAt(2) + time.charAt(3) + " AM";
+      } else if (
+        time.charAt(0) === "1" &&
+        (time.charAt(1) === "1" ||
+          time.charAt(1) === "2" ||
+          time.charAt(1) === "0")
+      ) {
+        time_mod =
+          time.charAt(0) +
+          time.charAt(1) +
+          ":" +
+          time.charAt(2) +
+          time.charAt(3) +
+          " AM";
+      } else {
+        num = Number(time.charAt(0) + time.charAt(1)) - 12;
+        time_mod = num + ":" + time.charAt(2) + time.charAt(3) + " PM";
       }
 
-      return time_mod
-    }
+      return time_mod;
+    },
+    dayName(day) {
+      let day_mod = "";
+
+     
+      for (let i = 0; i < day.length; i++) {
+        if (day.charAt(i) === "M") {
+          day_mod += "Mo";
+        } else if (day.charAt(i) === "T") {
+          day_mod += "Tu";
+        } else if (day.charAt(i) === "W") {
+          day_mod += "We";
+        } else if (day.charAt(i) === "R") {
+          day_mod += "Th";
+        } else if (day.charAt(i) === "F") {
+          day_mod += "Fr";
+        } else if (day.charAt(i) === "S") {
+          day_mod += "Sa";
+        }
+      }
+      return day_mod;
+    },
   },
+
   props: ["courseName"],
   mounted: function () {
     let getCourseName = this.$route.params.courseName;
