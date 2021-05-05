@@ -122,6 +122,7 @@ export default {
       ],
     };
   },
+  props: ["courseName", "user"],
   methods: {
     modifyTime(time) {
       let time_mod = "";
@@ -171,8 +172,6 @@ export default {
       return day_mod;
     },
   },
-
-  props: ["courseName"],
   mounted: function () {
     let getCourseName = this.$route.params.courseName;
     Vue.axios

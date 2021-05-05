@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Hi, {{ firstName + " " + lastName }}</h1>
+    <h1 v-if="user.displayName">Hi, {{ user.displayName }}</h1>
     <p>Start your class search</p>
     <b-form>
       <b-form-group
@@ -64,6 +64,7 @@ export default {
     "b-button": BButton,
     "b-form-group": BFormGroup,
   },
+  props: ["user"],
   data: function () {
     return {
       firstName: "John",
@@ -73,7 +74,7 @@ export default {
     };
   },
   mounted: function () {
-    let subject = "cadv";
+    let subject = "comp";
     Vue.axios
       .get(`https://api.metalab.csun.edu/curriculum/api/2.0/classes/${subject}`)
       .then((resp) => {
@@ -83,7 +84,6 @@ export default {
           seen.add(el.catalog_number);
           return !duplicate;
         });
-        console.log(resp);
       });
   },
   methods: {

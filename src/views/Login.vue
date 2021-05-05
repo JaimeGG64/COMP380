@@ -1,31 +1,32 @@
 <template>
   <b-container>
     <h1>CSUN Classes</h1>
-    <b-form @submit="onSubmit">
+    <b-form @submit.prevent="checkLogin">
       <b-form-group
         id="input-group-1"
         label="Username or Email:"
         label-for="input-1"
       >
         <b-form-input
-          id="input-1"
-          v-model="form.email"
-          type="text"
-          placeholder="Username or Email"
           required
+          type="email"
+          id="email"
+          placeholder="Email"
+          v-model="form.email"
         ></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Password:" label-for="input-2">
         <b-form-input
-          id="text-password"
-          v-model="form.password"
+          id="password"
           type="password"
           placeholder="Password"
+          v-model="form.password"
           aria-describedby="password-help-block"
         ></b-form-input>
       </b-form-group>
       <b-button type="submit" variant="primary">Submit</b-button>
+      <div v-if="error">{{ error }}</div>
     </b-form>
   </b-container>
 </template>
@@ -40,7 +41,7 @@ import {
   BButton,
   BFormGroup,
 } from "bootstrap-vue";
-
+import Firebase from "firebase";
 export default {
   name: "home",
   components: {
@@ -58,35 +59,33 @@ export default {
         email: "",
         password: "",
       },
-      show: true,
+      error: "",
     };
   },
   methods: {
     // eslint-disable-next-line
-    onSubmit(event) {
-      event.preventDefault();
-      if(this.form.email === "jd21345" && this.form.password === "password"){
-        this.studentLogin();
-      }
-      else if(this.form.email === "kv16753" && this.form.password === "bitcoin"){
-        this.instructorLogin();
-      }
-      else if(this.form.email === "qt72349" && this.form.password === "password"){
-        this.adminLogin();
-      }
+    checkLogin: function () {
+      const info = {
+        email: this.form.email,
+        password: this.form.password,
+      };
+      Firebase.auth()
+        .signInWithEmailAndPassword(info.email, info.password)
+        .then(
+          () => {
+            let getEmailAddress = info.email;
+            let emailDomain = getEmailAddress.split("@");
+            if (emailDomain[1] == "my.csun.edu") {
+              this.$router.push("student");
+            } else if (emailDomain[1] == "csun.edu") {
+              this.$router.push("instructor");
+            }
+          },
+          (error) => {
+            this.error = error.message;
+          }
+        );
     },
-    studentLogin(){
-      // eslint-disable-next-line
-      this.$router.push('student');
-    },
-    instructorLogin(){
-      // eslint-disable-next-line
-      this.$router.push('instructor');
-    },
-    adminLogin(){
-      // eslint-disable-next-line
-      this.$router.push('admin')
-    }
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navbar />
-    <router-view />
+    <Navbar @logout="logout" />
+    <router-view :user="user" />
   </div>
 </template>
 
@@ -27,10 +27,37 @@
 
 <script>
 import Navbar from "./components/Navbar";
+import Firebase from "firebase";
+import db from "./db.js";
 
 export default {
+  name: "app",
   components: {
     Navbar: Navbar,
+  },
+  data: function () {
+    return {
+      user: null,
+      error: null,
+    };
+  },
+  methods: {
+    logout() {
+      Firebase.auth()
+        .signOut()
+        .then(() => {
+          this.user = null;
+          this.$router.push("login");
+        });
+    },
+  },
+  mounted() {
+    Firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.user = user;
+        db.collection("users").doc(this.user.uid);
+      }
+    });
   },
 };
 </script>

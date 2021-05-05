@@ -49,7 +49,7 @@ Vue.use(VueAxios, axios);
 
 export default {
   name: "Instructor",
-  data: function() {
+  data: function () {
     return {
       firstName: "Vincent",
       lastName: "Doe",
@@ -57,10 +57,10 @@ export default {
       instructorClass: [],
     };
   },
-  mounted: function() {
+  mounted: function () {
     Vue.axios
       .get(
-        `https://api.metalab.csun.edu/curriculum/api/2.0/classes?instructor=${this.email}`
+        `https://api.metalab.csun.edu/curriculum/api/2.0/terms/Spring-2021/classes?instructor=${this.email}`
       )
       .then((resp) => {
         this.instructorClass = resp.data.classes;
