@@ -12,6 +12,8 @@
           <td>Unit</td>
           <td>Seats Left</td>
           <td>Generate Permission Number</td>
+          <td>Permission Number</td>
+
         </tr>
       </thead>
       <tbody>
@@ -30,7 +32,8 @@
           <td>
             {{ getSeatsLeft(item.enrollment_cap, item.enrollment_count) }}
           </td>
-          <td><button>Generate</button></td>
+          <td><button @click="generatePermissionNumber()">Generate</button></td>
+          <td>{{permissionNumber}}</td>
         </tr>
       </tbody>
     </table>
@@ -55,12 +58,13 @@ export default {
       lastName: "Doe",
       email: "vahe.karamian@csun.edu",
       instructorClass: [],
+      permissionNumber: "",
     };
   },
   mounted: function() {
     Vue.axios
       .get(
-        `https://api.metalab.csun.edu/curriculum/api/2.0/classes?instructor=${this.email}`
+        `https://api.metalab.csun.edu/curriculum/api/2.0/terms/Spring-2021/classes?instructor=${this.email}`
       )
       .then((resp) => {
         this.instructorClass = resp.data.classes;
@@ -90,6 +94,12 @@ export default {
       return enrollmentCap - enrollmentCount < 0
         ? 0
         : enrollmentCap - enrollmentCount;
+    },
+      generatePermissionNumber(){
+      
+      let str="";
+      str= Math.floor((Math.random() * 900000) + 100000).toString();
+      this.permissionNumber=str;
     },
   },
 };
