@@ -12,6 +12,8 @@
           <td>Unit</td>
           <td>Seats Left</td>
           <td>Generate Permission Number</td>
+          <td>Permission Number</td>
+
         </tr>
       </thead>
       <tbody>
@@ -30,7 +32,8 @@
           <td>
             {{ getSeatsLeft(item.enrollment_cap, item.enrollment_count) }}
           </td>
-          <td><button>Generate</button></td>
+          <td><button @click="generatePermissionNumber()">Generate</button></td>
+          <td>{{permissionNumber}}</td>
         </tr>
       </tbody>
     </table>
@@ -55,6 +58,7 @@ export default {
       lastName: "Doe",
       email: "vahe.karamian@csun.edu",
       instructorClass: [],
+      permissionNumber: "",
     };
   },
   mounted: function () {
@@ -90,6 +94,12 @@ export default {
       return enrollmentCap - enrollmentCount < 0
         ? 0
         : enrollmentCap - enrollmentCount;
+    },
+      generatePermissionNumber(){
+      
+      let str="";
+      str= Math.floor((Math.random() * 900000) + 100000).toString();
+      this.permissionNumber=str;
     },
   },
 };
