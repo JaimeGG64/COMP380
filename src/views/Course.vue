@@ -45,7 +45,7 @@
               <td>{{ instructorName(item.instructors[0].instructor) }}</td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
-              <td><button @click="generatePermissionNumber()">Enroll</button><br>{{permissionNumber}}</td>
+              <td><button>Enroll</button></td>
               
             </tr>
           </template>
@@ -123,7 +123,6 @@ export default {
           ],
         },
       ],
-      permissionNumber: ""
     };
   },
   methods: {
@@ -198,12 +197,7 @@ export default {
       return instructor_mod;
     },
 
-    generatePermissionNumber(){
-      
-      let str="";
-      str= Math.floor((Math.random() * 900000) + 100000).toString();
-      this.permissionNumber=str;
-    },
+
     generateUnit(unit){
       if (unit==="1"){
         return "Unit";
