@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <Navbar @logout="logout" />
-    <router-view :user="user" />
+    <router-view
+      :user="user"
+      :wishlist="wishlist"
+      @bookmarkCourse="bookmarkCourse"
+      @unbookmarkCourse="unbookmarkCourse"
+    />
   </div>
 </template>
 
@@ -39,6 +44,7 @@ export default {
     return {
       user: null,
       error: null,
+      wishlist: [],
     };
   },
   methods: {
@@ -47,15 +53,44 @@ export default {
         .signOut()
         .then(() => {
           this.user = null;
-          this.$router.push("login");
+          this.$router.push("/login");
         });
+    },
+    bookmarkCourse(payload) {
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("wishlistCourse")
+        .add({
+          name: payload,
+          createdAt: Firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    },
+    unbookmarkCourse: function (payload) {
+      db.collection("users")
+        .doc(this.user.uid)
+        .collection("wishlistCourse")
+        .doc(payload)
+        .delete();
     },
   },
   mounted() {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.user = user;
-        db.collection("users").doc(this.user.uid);
+        db.collection("users")
+          .doc(this.user.uid)
+          .collection("wishlistCourse")
+          .orderBy("name")
+          .onSnapshot((snapshot) => {
+            const snapData = [];
+            snapshot.forEach((doc) => {
+              snapData.push({
+                id: doc.id,
+                name: doc.data().name,
+              });
+            });
+            this.wishlist = snapData;
+          });
       }
     });
   },

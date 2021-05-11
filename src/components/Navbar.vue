@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-nav fill v-if="$route.name === 'student'">
+    <b-nav fill v-if="$route.name !== 'login'">
       <b-nav-item>CSUN Classes</b-nav-item>
       <b-nav-form>
         <b-form-input aria-label="Input" class="mr-1"></b-form-input>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/Login.vue'
 import Student from './views/Student.vue'
+import Wishlist from './views/Wishlist.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/student',
       name: 'student',
       component: Student
+    },
+    {
+      path: '/wishlist',
+      name: 'wishlist',
+      component: Wishlist
     },
     {
       path: "/course/:courseName",

@@ -5,8 +5,20 @@
     </router-link>
     <h1 class="course__heading">
       {{
-        `${availabeSection[0].subject} ${availabeSection[0].catalog_number} - ${availabeSection[0].title} (${availabeSection[0].class_type} ${availabeSection[0].units} ${generateUnit(availabeSection[0].units)})`
+        `${availabeSection[0].subject} ${availabeSection[0].catalog_number} - ${
+          availabeSection[0].title
+        } (${availabeSection[0].class_type} ${
+          availabeSection[0].units
+        } ${generateUnit(availabeSection[0].units)})`
       }}
+      <button
+        type="submit"
+        class="btn btn-sm btn-info"
+        id="buttonAdd"
+        @click.prevent="handleBookmark"
+      >
+        +
+      </button>
     </h1>
 
     <aside class="course__aside">
@@ -45,8 +57,19 @@
               <td>{{ instructorName(item.instructors[0].instructor) }}</td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
-              <td><button>Enroll</button></td>
-              
+              <td>
+                <button v-if="item.enrollment_cap - item.enrollment_count > 0">
+                  Enroll
+                </button>
+                <button
+                  v-else-if="
+                    item.enrollment_cap - item.enrollment_count >= 0 ||
+                    item.waitlist_count
+                  "
+                >
+                  Waitlist
+                </button>
+              </td>
             </tr>
           </template>
         </tbody>
@@ -156,7 +179,6 @@ export default {
     dayName(day) {
       let day_mod = "";
 
-     
       for (let i = 0; i < day.length; i++) {
         if (day.charAt(i) === "M") {
           day_mod += "Mo";
@@ -174,40 +196,39 @@ export default {
       }
       return day_mod;
     },
-      instructorName(email) {
+    instructorName(email) {
       let instructor_mod = "";
-      let period=false;
-     
-      for (let i = 0; email.charAt(i)!='@'; i++) {
-          if (i===0){
-           instructor_mod+=email.charAt(0).toUpperCase();
-           i++;
+      let period = false;
+
+      for (let i = 0; email.charAt(i) != "@"; i++) {
+        if (i === 0) {
+          instructor_mod += email.charAt(0).toUpperCase();
+          i++;
+        }
+        if (email.charAt(i) === ".") {
+          if (period === true) {
+            break;
           }
-          if(email.charAt(i)==='.'){
-            if (period===true){
-              break;
-            }
-            instructor_mod+=" ";
-            i++;
-            instructor_mod+=email.charAt(i).toUpperCase();
-           i++;
-           period=true;
-          }
-          instructor_mod+=email.charAt(i);
+          instructor_mod += " ";
+          i++;
+          instructor_mod += email.charAt(i).toUpperCase();
+          i++;
+          period = true;
+        }
+        instructor_mod += email.charAt(i);
       }
       return instructor_mod;
     },
-
-
-    generateUnit(unit){
-      if (unit==="1"){
+    generateUnit(unit) {
+      if (unit === "1") {
         return "Unit";
-      }
-      else{
+      } else {
         return "Units";
       }
-    }
-
+    },
+    handleBookmark() {
+      this.$emit("bookmarkCourse", this.$route.params.courseName);
+    },
   },
   mounted: function () {
     let getCourseName = this.$route.params.courseName;
