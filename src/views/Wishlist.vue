@@ -2,7 +2,16 @@
   <div>
     <h1>Wishlist</h1>
     <ul>
-      <li v-for="(item, i) in wishlist" :key="i">{{ item.name }}</li>
+      <li v-for="(item, i) in wishlist" :key="i">
+        {{ item.name }}
+        <button
+          class="btn btn-sm btn-outline-secondary"
+          title="Delete Meeting"
+          @click="$emit('unbookmarkCourse', item.id)"
+        >
+          Remove
+        </button>
+      </li>
     </ul>
   </div>
 </template>

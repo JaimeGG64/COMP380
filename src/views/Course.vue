@@ -15,7 +15,7 @@
         type="submit"
         class="btn btn-sm btn-info"
         id="buttonAdd"
-        @click.prevent="handleBookmark"
+        @click.prevent="toogleBookmark"
       >
         +
       </button>
@@ -46,7 +46,7 @@
         </thead>
         <tbody>
           <template v-for="(item, i) in availabeSection">
-            <tr v-if="item.meetings[0]" :key="i">
+            <tr v-if="item.meetings[0] && item.instructors" :key="i">
               <td>
                 {{ dayName(item.meetings[0].days) }}
               </td>
@@ -54,7 +54,9 @@
                 {{ modifyTime(item.meetings[0].start_time) }} –
                 {{ modifyTime(item.meetings[0].end_time) }}
               </td>
-              <td>{{ instructorName(item.instructors[0].instructor) }}</td>
+              <td v-if="item.instructors[0]">
+                {{ instructorName(item.instructors[0].instructor) }}
+              </td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
               <td>
@@ -148,7 +150,7 @@ export default {
       ],
     };
   },
-  props: ["courseName", "user"],
+  props: ["courseName", "user", "wishlist"],
   methods: {
     modifyTime(time) {
       let time_mod = "";
@@ -178,7 +180,6 @@ export default {
     },
     dayName(day) {
       let day_mod = "";
-
       for (let i = 0; i < day.length; i++) {
         if (day.charAt(i) === "M") {
           day_mod += "Mo";
@@ -226,8 +227,19 @@ export default {
         return "Units";
       }
     },
-    handleBookmark() {
-      this.$emit("bookmarkCourse", this.$route.params.courseName);
+    toogleBookmark() {
+      let currentDisplayedCourse = this.$route.params.courseName;
+      let getWishlistIndex = this.wishlist.findIndex(function (course) {
+        if (course.name == currentDisplayedCourse) return true;
+      });
+      if (
+        getWishlistIndex != -1 &&
+        this.wishlist[getWishlistIndex].name === currentDisplayedCourse
+      ) {
+        this.$emit("unbookmarkCourse", this.wishlist[getWishlistIndex].id);
+      } else {
+        this.$emit("bookmarkCourse", currentDisplayedCourse);
+      }
     },
   },
   mounted: function () {

@@ -65,7 +65,7 @@ export default {
           createdAt: Firebase.firestore.FieldValue.serverTimestamp(),
         });
     },
-    unbookmarkCourse: function (payload) {
+    unbookmarkCourse(payload) {
       db.collection("users")
         .doc(this.user.uid)
         .collection("wishlistCourse")
