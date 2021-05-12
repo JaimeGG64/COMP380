@@ -1,23 +1,32 @@
 <template>
   <div>
     <h1>Wishlist</h1>
-    <ul>
-      <li v-for="(item, i) in wishlist" :key="i">
-        {{ item.name }}
-        <button
+    <ul style="text-align: left">
+      <li v-for="item in displayWishlist" :key="item.wishlistId">
+        <router-link
+          :to="`/course/${item.courseMetadata.subject}-${item.courseMetadata.catalog_number}`"
+        >
+          {{
+            `${item.courseMetadata.subject} ${item.courseMetadata.catalog_number} - ${item.courseMetadata.title}`
+          }}
+        </router-link>
+        <!-- <button
           class="btn btn-sm btn-outline-secondary"
-          title="Delete Meeting"
-          @click="$emit('unbookmarkCourse', item.id)"
+          :title="`Delete ${item.courseMetadata.subject} ${item.courseMetadata.catalog_number}`"
+          @click="$emit('unbookmarkCourse', item.wishlistId)"
         >
           Remove
-        </button>
+        </button> -->
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-// import db from "../db.js";
+import Vue from "vue";
+import axios from "axios";
+import VueAxios from "vue-axios";
+Vue.use(VueAxios, axios);
 
 export default {
   name: "Wishlist",
@@ -27,6 +36,22 @@ export default {
     };
   },
   props: ["wishlist"],
+  mounted: function () {
+    this.wishlist.forEach((element) => {
+      Vue.axios
+        .get(
+          `https://api.metalab.csun.edu/curriculum/api/2.0/terms/Spring-2021/classes/${element.name}`
+        )
+        .then((resp) => {
+          const templateData = {
+            courseMetadata: resp.data.classes[0],
+            wishlistId: element.id,
+          };
+          this.displayWishlist.push(templateData);
+        })
+        .catch((err) => console.log(err));
+    });
+  },
 };
 </script>
 
