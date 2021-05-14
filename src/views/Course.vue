@@ -57,7 +57,7 @@
                 {{ modifyTime(item.meetings[0].end_time) }}
               </td>
               <td v-if="item.instructors[0]">
-                {{ instructorName(item.instructors[0].instructor) }}
+                 <a :href ="`mailto: ${item.instructors[0].instructor}`"> {{instructorName(item.instructors[0].instructor)}}</a> 
               </td>
               <td>{{ item.meetings[0].location }}</td>
               <td>{{ item.enrollment_cap - item.enrollment_count }}</td>
