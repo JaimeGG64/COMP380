@@ -12,12 +12,14 @@
         } ${generateUnit(availabeSection[0].units)})`
       }}
       <button
+        v-if="true"
         type="submit"
-        class="btn btn-sm btn-info"
+        class="btn btn-sm"
+        :class="[checkIfBookmarked ? 'btn-info' : '', '']"
         id="buttonAdd"
         @click.prevent="toogleBookmark"
       >
-        +
+        <font-awesome-icon icon="bookmark" />
       </button>
     </h1>
 
@@ -124,6 +126,7 @@ import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { FormPlugin, BForm, BFormText, BFormInput } from "bootstrap-vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 Vue.use(VueAxios, axios, FormPlugin);
 
 export default {
@@ -133,6 +136,7 @@ export default {
     "b-form": BForm,
     // eslint-disable-next-line
     "b-form-text": BFormText,
+    "font-awesome-icon": FontAwesomeIcon,
   },
   data: function () {
     return {
@@ -148,6 +152,7 @@ export default {
           ],
         },
       ],
+      isBookmarked: false,
     };
   },
   props: ["courseName", "user", "wishlist"],
@@ -239,6 +244,22 @@ export default {
         this.$emit("unbookmarkCourse", this.wishlist[getWishlistIndex].id);
       } else {
         this.$emit("bookmarkCourse", currentDisplayedCourse);
+      }
+    },
+  },
+  computed: {
+    checkIfBookmarked: function () {
+      let currentDisplayedCourse = this.$route.params.courseName;
+      let getWishlistIndex = this.wishlist.findIndex(function (course) {
+        if (course.name == currentDisplayedCourse) return true;
+      });
+      if (
+        getWishlistIndex != -1 &&
+        this.wishlist[getWishlistIndex].name === currentDisplayedCourse
+      ) {
+        return !this.isBookmarked;
+      } else {
+        return this.isBookmarked;
       }
     },
   },

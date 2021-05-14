@@ -5,6 +5,14 @@ import store from './store'
 import { BootstrapVue } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { library } from "@fortawesome/fontawesome-svg-core";
+
+
+import {
+  faBookmark
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(faBookmark);
 
 Vue.config.productionTip = false
 
